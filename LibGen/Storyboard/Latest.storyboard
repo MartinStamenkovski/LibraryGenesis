@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="8ak-yv-jOZ">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Latest-->
+        <scene sceneID="8bO-LW-gMG">
+            <objects>
+                <viewController id="RaP-9G-7R1" customClass="LatestViewController" customModule="LibGen" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="v05-bT-0rH">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="snl-1E-HTg">
+                                <rect key="frame" x="0.0" y="140" width="414" height="756"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="snl-1E-HTg" secondAttribute="bottom" id="6h7-hY-DMC"/>
+                            <constraint firstItem="snl-1E-HTg" firstAttribute="top" secondItem="YGr-rj-2iB" secondAttribute="top" id="714-EJ-7XW"/>
+                            <constraint firstItem="snl-1E-HTg" firstAttribute="leading" secondItem="YGr-rj-2iB" secondAttribute="leading" id="7ga-CK-ni3"/>
+                            <constraint firstItem="YGr-rj-2iB" firstAttribute="trailing" secondItem="snl-1E-HTg" secondAttribute="trailing" id="ocg-Tv-cgQ"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="YGr-rj-2iB"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Latest" id="sjq-fX-DPa"/>
+                    <connections>
+                        <outlet property="tableView" destination="snl-1E-HTg" id="Wl2-ib-3cy"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mRe-OS-Jet" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="237.68115942028987" y="827.67857142857144"/>
+        </scene>
+        <!--Latest-->
+        <scene sceneID="x2g-4O-Qz3">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="8ak-yv-jOZ" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Latest" image="book_tabbar" id="FEf-NX-vfC"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="0uR-r4-NkP">
+                        <rect key="frame" x="0.0" y="44" width="414" height="96"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="RaP-9G-7R1" kind="relationship" relationship="rootViewController" id="xbe-1J-JhR"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qla-iw-Omp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-672.46376811594212" y="827.67857142857144"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="book_tabbar" width="24" height="24"/>
+    </resources>
+</document>
