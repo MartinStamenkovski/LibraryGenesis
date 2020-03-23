@@ -14,11 +14,11 @@ class LoadingFooterView: UIView {
         let indicator: UIActivityIndicatorView
         if #available(iOS 13.0, *) {
             indicator = UIActivityIndicatorView(style: .medium)
+            indicator.color = .systemBlue
         } else {
             indicator = UIActivityIndicatorView(style: .white)
+            indicator.color = .blue
         }
-        indicator.tintColor = .blue
-        indicator.color = .blue
         indicator.translatesAutoresizingMaskIntoConstraints = false
         indicator.startAnimating()
         indicator.hidesWhenStopped = true

@@ -14,6 +14,20 @@ protocol BookServiceDelegate: AnyObject {
     func didFailedLoadBooks(_ service: BookService, with error: Error)
 }
 
+enum LibError: Error {
+    case errorParsingHTML
+    case error(Error)
+    
+    var localizedDescription: String {
+        switch self {
+        case .errorParsingHTML:
+            return "Failed to load books, retry"
+        case .error(let error):
+            return error.localizedDescription
+        }
+    }
+}
+
 class BookService {
    
     weak var delegate: BookServiceDelegate?
@@ -21,19 +35,23 @@ class BookService {
     var page: Int = 1
     var books: [Book] = []
         
-    func loadBooks(from url: URL, completion: @escaping((Result<[Book], Error>) -> Void)) {
+    func loadBooks(from url: URL, completion: @escaping((Result<[Book], LibError>) -> Void)) {
         URLSession.shared.dataTask(with: url) { (data, res, error) in
             if let error = error {
                 DispatchQueue.main.async {
-                    completion(.failure(error))
+                    completion(.failure(.error(error)))
                 }
                 return
             }
             if let data = data  {
                 do {
+                    guard let html = String(data: data, encoding: .utf8) else {
+                        completion(.failure(.errorParsingHTML))
+                        return
+                    }
                     var ids: [String?] = []
                     
-                    let doc: Document = try SwiftSoup.parse(String(data: data, encoding: .utf8)!)
+                    let doc: Document = try SwiftSoup.parse(html)
                     
                     let trArray = try doc.select("table.c tr").array()
                     for tr in trArray {
@@ -46,7 +64,7 @@ class BookService {
                     
                 } catch {
                     DispatchQueue.main.async {
-                        completion(.failure(error))
+                        completion(.failure(.error(error)))
                     }
                 }
             }
@@ -57,7 +75,7 @@ class BookService {
 //MARK: - Get books with given ids.
 extension BookService {
     
-    private func getBooks(with ids: [String], completion: @escaping((Result<[Book], Error>) -> Void)) {
+    private func getBooks(with ids: [String], completion: @escaping((Result<[Book], LibError>) -> Void)) {
        
         var urlComponent = URLComponents(url: .baseURL, resolvingAgainstBaseURL: true)
         
@@ -70,7 +88,7 @@ extension BookService {
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let error = error {
                 DispatchQueue.main.async {
-                    completion(.failure(error))
+                    completion(.failure(.error(error)))
                 }
                 return
             }
@@ -81,7 +99,7 @@ extension BookService {
     }
     
     
-    private func decodeBooks(from data: Data, _ completion: @escaping((Result<[Book], Error>) -> Void)) {
+    private func decodeBooks(from data: Data, _ completion: @escaping((Result<[Book], LibError>) -> Void)) {
         let jsonDecoder = JSONDecoder()
         do {
             let books = try jsonDecoder.decode([Book].self, from: data)
@@ -90,7 +108,7 @@ extension BookService {
             }
         } catch {
             DispatchQueue.main.async {
-                completion(.failure(error))
+                completion(.failure(.error(error)))
             }
         }
     }

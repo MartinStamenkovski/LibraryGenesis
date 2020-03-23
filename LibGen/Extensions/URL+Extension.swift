@@ -16,12 +16,12 @@ extension URL {
         return URL(string: "http://gen.lib.rus.ec/search.php?mode=last&view=simple&column=def&sort=def&sortmode=ASC&page=\(page)")!
     }
     
-    static func search(with query: String, and page: Int) -> URL {
-        return URL(string: "http://gen.lib.rus.ec/search.php?&req=\(query)&phrase=0&view=simple&column=def&sort=def&sortmode=ASC&page=\(page)")!
+    static var search: URL {
+        return URL(string: "http://gen.lib.rus.ec/search.php")!
     }
     
     static func image(with url: String?) -> URL? {
         guard let url = url else { return nil }
-        return URL(string: "http://gen.lib.rus.ec/covers/\(url)")!
+        return URL(string: "http://gen.lib.rus.ec/covers/\(url)")
     }
 }

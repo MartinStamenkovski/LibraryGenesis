@@ -73,6 +73,7 @@ extension SearchBookViewController: BookServiceDelegate {
     
     func didFailedLoadBooks(_ service: BookService, with error: Error) {
         self.removeLoadingFooter()
+        print(error)
     }
     
     private func removeLoadingFooter() {
@@ -101,7 +102,14 @@ extension SearchBookViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let query = searchBar.text else { return }
+        self.bookService.removeAll()
+        self.tableView.reloadData()
+        
         self.bookService.searchBooks(with: query)
+    }
+    
+    func searchBarResultsListButtonClicked(_ searchBar: UISearchBar) {
+        print("searchBarResultsListButtonClicked")
     }
 }
 
