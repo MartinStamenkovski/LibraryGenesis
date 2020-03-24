@@ -10,7 +10,7 @@ import UIKit
 
 struct Alert {
     
-    static func showMirrors(on vc: UIViewController, for md5: String, completion: @escaping((URL) -> Void)) {
+    static func showMirrors(on vc: UIViewController,sourceView: UIView, for md5: String, completion: @escaping((URL) -> Void)) {
         let actionSheetMirrors = UIAlertController(title: "Select download mirror", message: nil, preferredStyle: .actionSheet)
         
         let libTipsMirrorAction = UIAlertAction(title: "Mirror 1", style: .default) { _ in
@@ -34,35 +34,19 @@ struct Alert {
         actionSheetMirrors.addAction(bOKMirrorAction)
         
         actionSheetMirrors.addAction(cancelAction)
+        if let popoverController = actionSheetMirrors.popoverPresentationController {
+            popoverController.sourceView = sourceView
+            popoverController.sourceRect = sourceView.bounds
+        }
         vc.present(actionSheetMirrors, animated: true, completion: nil)
     }
     
-    static func errorLoadingBooks(on vc: UIViewController, with error: LibError, completion: @escaping((Bool) -> Void)) {
-        switch error {
-        case .error, .errorParsingHTML:
-            Alert.retry(on: vc, with: error, completion)
-        case .noResults:
-            Alert.errorNoResults(on: vc, with: error, completion)
-        }
-    }
-    
-    static func retry(on vc: UIViewController, with error: LibError, _ completion: @escaping((Bool) -> Void)) {
-        let alert = UIAlertController(title: "Error loading books, try again.", message: error.localizedDescription, preferredStyle: .alert)
+    static func urlError(on vc: UIViewController) {
+        let alert = UIAlertController(title: "Link cannot be open, try another mirror link.", message: nil, preferredStyle: .alert)
         
-        let retryAction = UIAlertAction(title: "Retry", style: .cancel) { _ in
-            completion(true)
-        }
-        alert.addAction(retryAction)
-        vc.present(alert, animated: true, completion: nil)
-    }
-    
-    private static func errorNoResults(on vc: UIViewController, with error: LibError,_ completion: @escaping((Bool) -> Void)) {
-        let alert = UIAlertController(title: "Error loading books, try again.", message: error.localizedDescription, preferredStyle: .alert)
-        
-        let okAction = UIAlertAction(title: "OK", style: .cancel) { _ in
-            completion(false)
-        }
+        let okAction = UIAlertAction(title: "OK", style: .cancel)
         alert.addAction(okAction)
         vc.present(alert, animated: true, completion: nil)
     }
+    
 }

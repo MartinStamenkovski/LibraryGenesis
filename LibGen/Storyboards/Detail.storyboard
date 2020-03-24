@@ -231,6 +231,7 @@
                         <viewLayoutGuide key="safeArea" id="yQW-ZY-6Xc"/>
                     </view>
                     <connections>
+                        <outlet property="buttonDownload" destination="6Fv-S2-1qD" id="RHe-AD-6JO"/>
                         <outlet property="buttonExpandDescription" destination="XUu-7P-gkJ" id="fcG-Bb-L1q"/>
                         <outlet property="imageViewHeader" destination="8Zq-zS-wU5" id="ILK-T1-uRp"/>
                         <outlet property="imageViewHeaderHeight" destination="xmK-CO-3IQ" id="6Bu-p7-xrk"/>

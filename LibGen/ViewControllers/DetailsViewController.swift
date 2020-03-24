@@ -12,7 +12,9 @@ class DetailsViewController: UIViewController {
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var imageViewHeader: UIImageView!
+    
     @IBOutlet weak var buttonExpandDescription: UIButton!
+    @IBOutlet weak var buttonDownload: UIButton!
     
     @IBOutlet weak var labelTitle: UILabel!
     @IBOutlet weak var labelAuthor: UILabel!
@@ -66,8 +68,12 @@ class DetailsViewController: UIViewController {
     
     @IBAction
     func actionDownload(_ sender: UIButton) {
-        Alert.showMirrors(on: self, for: book.md5) { url in
-            UIApplication.shared.open(url)
+        Alert.showMirrors(on: self, sourceView: self.buttonDownload, for: book.md5) { url in
+            if UIApplication.shared.canOpenURL(url) {
+                 UIApplication.shared.open(url)
+            } else {
+                Alert.urlError(on: self)
+            }
         }
     }
     
