@@ -144,7 +144,7 @@ private final class LoadingView: UIView {
         if #available(iOS 13.0, *) {
             loadingIndicator = UIActivityIndicatorView(style: .medium)
         } else {
-            loadingIndicator = UIActivityIndicatorView(style: .whiteLarge)
+            loadingIndicator = UIActivityIndicatorView(style: .gray)
         }
         loadingIndicator.hidesWhenStopped = true
         loadingIndicator.startAnimating()

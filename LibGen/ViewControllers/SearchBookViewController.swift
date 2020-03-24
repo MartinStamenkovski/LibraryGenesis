@@ -28,7 +28,7 @@ class SearchBookViewController: UIViewController {
         return snackBar
     }()
     
-    private var topAnchorSnackbar: NSLayoutConstraint!
+    private var bottomAnchorSnackbar: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,15 +51,16 @@ class SearchBookViewController: UIViewController {
     private func setupSnackbar() {
         self.view.addSubview(snackBar)
         if #available(iOS 11.0, *) {
-            self.topAnchorSnackbar =  self.snackBar.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: -500)
+            self.bottomAnchorSnackbar =  self.snackBar.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 500)
         } else {
-            self.topAnchorSnackbar =  self.snackBar.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -500)
+            self.bottomAnchorSnackbar =  self.snackBar.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 500)
         }
-        self.topAnchorSnackbar.isActive = true
+        self.bottomAnchorSnackbar.isActive = true
         
         NSLayoutConstraint.activate([
             self.snackBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
             self.snackBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
+            self.snackBar.heightAnchor.constraint(greaterThanOrEqualToConstant: 60)
         ])
         
         self.snackBar.onRetry = {[unowned self] in
@@ -125,7 +126,7 @@ extension SearchBookViewController: BookServiceDelegate {
         guard !self.bookService.isEndOfList(with: error) else { return }
         
         self.snackBar.message = error.localizedDescription
-        self.topAnchorSnackbar.constant = 20
+        self.bottomAnchorSnackbar.constant = -20
         UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 7, options: [.curveEaseInOut], animations: {
             self.view.layoutIfNeeded()
         }, completion: nil)
@@ -133,12 +134,13 @@ extension SearchBookViewController: BookServiceDelegate {
     }
     
     private func hideSnackbar() {
-        guard self.topAnchorSnackbar.constant == 20 else { return }
-        self.topAnchorSnackbar.constant = -500
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 7, options: [.curveEaseInOut], animations: {
+        guard self.bottomAnchorSnackbar.constant == -20 else { return }
+        self.bottomAnchorSnackbar.constant = 500
+        UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 7, options: [.curveEaseIn], animations: {
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
+    
 }
 extension SearchBookViewController: UISearchBarDelegate {
     
@@ -155,6 +157,7 @@ extension SearchBookViewController: UISearchBarDelegate {
         } else {
             self.tableView.tableHeaderView = searchController.searchBar
         }
+        self.definesPresentationContext = true
         self.searchController.obscuresBackgroundDuringPresentation = false
         
     }
@@ -167,6 +170,10 @@ extension SearchBookViewController: UISearchBarDelegate {
         self.showLoading {
             self.bookService.searchBooks(with: query)
         }
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+         self.hideSnackbar()
     }
 
 }
