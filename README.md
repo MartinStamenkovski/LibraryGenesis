@@ -1,4 +1,4 @@
-# LibraryGenesis-iOS
+# LibraryGenesis
 
 This application is showing books from [Library Genesis](https://libgen.is).
 
