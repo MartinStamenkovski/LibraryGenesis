@@ -14,6 +14,13 @@ This application is showing books from [Library Genesis](https://libgen.is).
 ## Installation 
 Clone the github repo, open the app in Xcode and run it of course.
 
+## Remarks
+There is no official API for [Library Genesis](https://libgen.is), you need to parse the html and extract the IDs of the books, then you can make request to the available API, example:
+```
+http://gen.lib.rus.ec/json.php?ids=2490856, 2490855, 2490854&fields=*
+```
+More information can be found [here](http://garbage.world/posts/libgen/)
+
 ## Note
 This is not an e-book reader, to read downloaded books you will need an additional epub/pdf reader application. 
 
