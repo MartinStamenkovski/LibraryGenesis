@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5B54C2A4242A006D00AB0000 /* MSLoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B54C2A3242A006D00AB0000 /* MSLoadingViewController.swift */; };
+		5B54C2A6242A081000AB0000 /* Snackbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B54C2A5242A081000AB0000 /* Snackbar.swift */; };
 		5B9D3E362428DC3300B6DFAF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9D3E352428DC3300B6DFAF /* AppDelegate.swift */; };
 		5B9D3E382428DC3300B6DFAF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9D3E372428DC3300B6DFAF /* SceneDelegate.swift */; };
 		5B9D3E3D2428DC3300B6DFAF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5B9D3E3B2428DC3300B6DFAF /* Main.storyboard */; };
@@ -34,6 +36,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5B54C2A3242A006D00AB0000 /* MSLoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSLoadingViewController.swift; sourceTree = "<group>"; };
+		5B54C2A5242A081000AB0000 /* Snackbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snackbar.swift; sourceTree = "<group>"; };
 		5B9D3E322428DC3300B6DFAF /* LibGen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LibGen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B9D3E352428DC3300B6DFAF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5B9D3E372428DC3300B6DFAF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -178,7 +182,9 @@
 		5B9D3E7C242947A500B6DFAF /* SupportingViews */ = {
 			isa = PBXGroup;
 			children = (
+				5B54C2A3242A006D00AB0000 /* MSLoadingViewController.swift */,
 				5B9D3E7D242947C700B6DFAF /* LoadingFooterView.swift */,
+				5B54C2A5242A081000AB0000 /* Snackbar.swift */,
 			);
 			path = SupportingViews;
 			sourceTree = "<group>";
@@ -271,6 +277,8 @@
 				5B9D3E7E242947C800B6DFAF /* LoadingFooterView.swift in Sources */,
 				5B9D3E5F2428F31300B6DFAF /* Book.swift in Sources */,
 				5B9D3E672428F66700B6DFAF /* BookTableViewCell.swift in Sources */,
+				5B54C2A4242A006D00AB0000 /* MSLoadingViewController.swift in Sources */,
+				5B54C2A6242A081000AB0000 /* Snackbar.swift in Sources */,
 				5B9D3E362428DC3300B6DFAF /* AppDelegate.swift in Sources */,
 				5B9D3E7B2429311200B6DFAF /* SearchBookService.swift in Sources */,
 				5B9D3E792429247D00B6DFAF /* SearchBookViewController.swift in Sources */,

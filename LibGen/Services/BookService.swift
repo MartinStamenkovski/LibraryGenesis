@@ -11,17 +11,20 @@ import SwiftSoup
 
 protocol BookServiceDelegate: AnyObject {
     func didLoadBooks(_ service: BookService)
-    func didFailedLoadBooks(_ service: BookService, with error: Error)
+    func didFailedLoadBooks(_ service: BookService, with error: LibError)
 }
 
 enum LibError: Error {
     case errorParsingHTML
     case error(Error)
+    case noResults
     
     var localizedDescription: String {
         switch self {
         case .errorParsingHTML:
-            return "Failed to load books, retry"
+            return "Failed to load books, try again."
+        case .noResults:
+            return "No results to show, try more general keyword."
         case .error(let error):
             return error.localizedDescription
         }
@@ -29,12 +32,12 @@ enum LibError: Error {
 }
 
 class BookService {
-   
+    
     weak var delegate: BookServiceDelegate?
-        
+    
     var page: Int = 1
     var books: [Book] = []
-        
+    
     func loadBooks(from url: URL, completion: @escaping((Result<[Book], LibError>) -> Void)) {
         URLSession.shared.dataTask(with: url) { (data, res, error) in
             if let error = error {
@@ -60,6 +63,13 @@ class BookService {
                     
                     //We need to be sure that id is Int.
                     let parsedIDs = ids.compactMap { $0 }.compactMap { Int($0) }.map { String($0) }
+                    
+                    guard !parsedIDs.isEmpty else  {
+                        DispatchQueue.main.async {
+                            completion(.failure(.noResults))
+                        }
+                        return
+                    }
                     self.getBooks(with: parsedIDs, completion: completion)
                     
                 } catch {
@@ -76,7 +86,7 @@ class BookService {
 extension BookService {
     
     private func getBooks(with ids: [String], completion: @escaping((Result<[Book], LibError>) -> Void)) {
-       
+        
         var urlComponent = URLComponents(url: .baseURL, resolvingAgainstBaseURL: true)
         
         urlComponent?.queryItems = [
@@ -110,6 +120,16 @@ extension BookService {
             DispatchQueue.main.async {
                 completion(.failure(.error(error)))
             }
+        }
+    }
+    
+    
+    func isEndOfList(with error: LibError) -> Bool {
+        switch error {
+        case .noResults:
+            return page > 1
+        default:
+            return false
         }
     }
 }

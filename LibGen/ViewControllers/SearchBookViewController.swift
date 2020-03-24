@@ -13,13 +13,22 @@ class SearchBookViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     private var searchController: UISearchController!
+    private var loadingViewController: MSLoadingViewController!
     
     private var bookService: SearchBookService!
     
     lazy var footerView: LoadingFooterView = {
-        let footerView = LoadingFooterView(frame: CGRect(origin: .zero, size: CGSize(width: self.tableView.bounds.width, height: 100)))
+        let footerView = LoadingFooterView(frame: CGRect(origin: .zero, size: CGSize(width: self.tableView.bounds.width, height: 80)))
         return footerView
     }()
+    
+    private var snackBar: Snackbar = {
+        let snackBar = Snackbar()
+        snackBar.translatesAutoresizingMaskIntoConstraints = false
+        return snackBar
+    }()
+    
+    private var topAnchorSnackbar: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +37,8 @@ class SearchBookViewController: UIViewController {
         self.bookService.delegate = self
         
         self.setupTableView()
+        self.setupSnackbar()
+        
         self.setupSearchController()
     }
     
@@ -37,6 +48,26 @@ class SearchBookViewController: UIViewController {
         self.tableView.dataSource = self
     }
     
+    private func setupSnackbar() {
+        self.view.addSubview(snackBar)
+        if #available(iOS 11.0, *) {
+            self.topAnchorSnackbar =  self.snackBar.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: -500)
+        } else {
+            self.topAnchorSnackbar =  self.snackBar.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -500)
+        }
+        self.topAnchorSnackbar.isActive = true
+        
+        NSLayoutConstraint.activate([
+            self.snackBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
+            self.snackBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
+        ])
+        
+        self.snackBar.onRetry = {[unowned self] in
+            self.showLoading {
+                self.bookService.refreshBooks()
+            }
+        }
+    }
 }
 
 extension SearchBookViewController: UITableViewDelegate, UITableViewDataSource {
@@ -57,9 +88,7 @@ extension SearchBookViewController: UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row == self.bookService.lastIndex {
-            self.footerView.startAnimating()
-            self.tableView.tableFooterView = footerView
-            self.bookService.loadNextPage()
+            self.loadNextPage()
         }
     }
 }
@@ -67,18 +96,48 @@ extension SearchBookViewController: UITableViewDelegate, UITableViewDataSource {
 extension SearchBookViewController: BookServiceDelegate {
     
     func didLoadBooks(_ service: BookService) {
-        self.tableView.reloadData()
-        self.removeLoadingFooter()
+        self.dismissLoading {[weak self] in
+            self?.hideSnackbar()
+            self?.tableView.reloadData()
+            self?.removeLoadingFooter()
+        }
     }
     
-    func didFailedLoadBooks(_ service: BookService, with error: Error) {
-        self.removeLoadingFooter()
-        print(error)
+    func didFailedLoadBooks(_ service: BookService, with error: LibError) {
+        self.dismissLoading {[weak self] in
+            self?.removeLoadingFooter()
+            self?.onSearchError(with: error)
+        }
     }
     
     private func removeLoadingFooter() {
         self.footerView.stopAnimating()
-        self.tableView.tableFooterView = UIView(frame: .zero)
+        self.tableView.tableFooterView = nil
+    }
+    
+    private func loadNextPage() {
+        self.footerView.startAnimating()
+        self.tableView.tableFooterView = footerView
+        self.bookService.loadNextPage()
+    }
+    
+    private func onSearchError(with error: LibError) {
+        guard !self.bookService.isEndOfList(with: error) else { return }
+        
+        self.snackBar.message = error.localizedDescription
+        self.topAnchorSnackbar.constant = 20
+        UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 7, options: [.curveEaseInOut], animations: {
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+        
+    }
+    
+    private func hideSnackbar() {
+        guard self.topAnchorSnackbar.constant == 20 else { return }
+        self.topAnchorSnackbar.constant = -500
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 7, options: [.curveEaseInOut], animations: {
+            self.view.layoutIfNeeded()
+        }, completion: nil)
     }
 }
 extension SearchBookViewController: UISearchBarDelegate {
@@ -105,12 +164,11 @@ extension SearchBookViewController: UISearchBarDelegate {
         self.bookService.removeAll()
         self.tableView.reloadData()
         
-        self.bookService.searchBooks(with: query)
+        self.showLoading {
+            self.bookService.searchBooks(with: query)
+        }
     }
-    
-    func searchBarResultsListButtonClicked(_ searchBar: UISearchBar) {
-        print("searchBarResultsListButtonClicked")
-    }
+
 }
 
 extension SearchBookViewController {
@@ -120,5 +178,20 @@ extension SearchBookViewController {
         let detailsViewController = detailStoryboard.instantiateViewController(withIdentifier: "detailsViewController") as! DetailsViewController
         detailsViewController.book = book
         self.navigationController?.pushViewController(detailsViewController, animated: true)
+    }
+    
+    private func showLoading(_ completion: @escaping (() -> Void)) {
+        self.loadingViewController = MSLoadingViewController()
+        self.loadingViewController.message = "Fetching books..."
+        self.present(loadingViewController, animated: true, completion: completion)
+    }
+    
+    private func dismissLoading(_ completion: @escaping (() -> Void)) {
+        guard let loadingViewController = self.loadingViewController else {
+            completion()
+            return
+        }
+        loadingViewController.dismiss(animated: true, completion: completion)
+        self.loadingViewController = nil
     }
 }

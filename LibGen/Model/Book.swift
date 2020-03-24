@@ -18,6 +18,9 @@ struct Book: Codable {
     let md5: String
     let description: String?
     let coverURL: String?
+    let publisher: String
+    let pages: String
+    let fileType: String
     
     private enum CodingKeys: String, CodingKey {
         case title
@@ -28,5 +31,21 @@ struct Book: Codable {
         case md5
         case description = "descr"
         case coverURL = "coverurl"
+        case publisher
+        case pages
+        case fileType = "extension"
+    }
+    
+    var publisherOrEmpty: String {
+        return publisher.isEmpty ? "N/A" : publisher
+    }
+    
+    var descriptionOrEmpty: String {
+        guard let description = self.description else { return "N/A" }
+        return description.isEmpty ? "N/A" : description
+    }
+    
+    var pagesOrEmpty: String {
+        return pages.isEmpty ? "N/A" : pages
     }
 }

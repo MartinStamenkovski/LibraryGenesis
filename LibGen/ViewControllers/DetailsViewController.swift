@@ -12,11 +12,16 @@ class DetailsViewController: UIViewController {
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var imageViewHeader: UIImageView!
+    @IBOutlet weak var buttonExpandDescription: UIButton!
     
     @IBOutlet weak var labelTitle: UILabel!
     @IBOutlet weak var labelAuthor: UILabel!
     @IBOutlet weak var labelYear: UILabel!
     @IBOutlet weak var labelLanguage: UILabel!
+    @IBOutlet weak var labelPublisher: UILabel!
+    @IBOutlet weak var labelPages: UILabel!
+    @IBOutlet weak var labelFileType: UILabel!
+    
     @IBOutlet weak var labelDescription: UILabel!
     
     @IBOutlet weak var imageViewHeaderHeight: NSLayoutConstraint!
@@ -29,6 +34,7 @@ class DetailsViewController: UIViewController {
         self.setupBookData()
         self.setupStretchyHeader()
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.transparent()
@@ -49,8 +55,10 @@ class DetailsViewController: UIViewController {
         UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction, .curveEaseInOut], animations: {
             if self.labelDescription.numberOfLines == 3 {
                 self.labelDescription.numberOfLines = 0
+                self.buttonExpandDescription.transform = CGAffineTransform(rotationAngle: .pi)
             } else {
                 self.labelDescription.numberOfLines = 3
+                self.buttonExpandDescription.transform = .identity
             }
             self.view.layoutIfNeeded()
         }, completion: nil)
@@ -69,7 +77,10 @@ class DetailsViewController: UIViewController {
         self.labelYear.text = book.year
         self.labelAuthor.text = book.author
         self.labelLanguage.text = book.language
-        self.labelDescription.text = book.description ?? "No description available"
+        self.labelPublisher.text = book.publisherOrEmpty
+        self.labelPages.text = book.pagesOrEmpty
+        self.labelFileType.text = book.fileType
+        self.labelDescription.text = book.descriptionOrEmpty
     }
 }
 

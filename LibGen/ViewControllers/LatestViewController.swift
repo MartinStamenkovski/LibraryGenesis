@@ -14,18 +14,32 @@ class LatestViewController: UIViewController {
     
     private var latestService: LatestBookService!
     
+    var loadingViewController: MSLoadingViewController!
+    
     lazy var footerView: LoadingFooterView = {
-        let footerView = LoadingFooterView(frame: CGRect(origin: .zero, size: CGSize(width: self.tableView.bounds.width, height: 100)))
+        let footerView = LoadingFooterView(frame: CGRect(origin: .zero, size: CGSize(width: self.tableView.bounds.width, height: 80)))
         return footerView
     }()
+    
+    private var snackBar: Snackbar = {
+        let snackBar = Snackbar()
+        snackBar.translatesAutoresizingMaskIntoConstraints = false
+        return snackBar
+    }()
+    private var topAnchorSnackbar: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.latestService = LatestBookService()
         self.latestService.delegate = self
-        self.latestService.fetchLatestBooks()
+        DispatchQueue.main.async {
+            self.showLoading {
+                self.latestService.fetchLatestBooks()
+            }
+        }
         
+        self.setupSnackbar()
         self.setupTableView()
     }
     
@@ -34,6 +48,27 @@ class LatestViewController: UIViewController {
         self.tableView.register(UINib(nibName: "BookTableViewCell", bundle: nil), forCellReuseIdentifier: .bookTableViewCell)
         self.tableView.delegate = self
         self.tableView.dataSource = self
+    }
+    
+    private func setupSnackbar() {
+        self.view.addSubview(snackBar)
+        if #available(iOS 11.0, *) {
+            self.topAnchorSnackbar =  self.snackBar.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: -500)
+        } else {
+            self.topAnchorSnackbar =  self.snackBar.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -500)
+        }
+        self.topAnchorSnackbar.isActive = true
+        
+        NSLayoutConstraint.activate([
+            self.snackBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
+            self.snackBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
+        ])
+        
+        self.snackBar.onRetry = {[unowned self] in
+            self.showLoading {
+                self.latestService.refreshBooks()
+            }
+        }
     }
 }
 extension LatestViewController: UITableViewDelegate, UITableViewDataSource {
@@ -65,17 +100,42 @@ extension LatestViewController: UITableViewDelegate, UITableViewDataSource {
 extension LatestViewController: BookServiceDelegate {
     
     func didLoadBooks(_ service: BookService) {
-        self.removeLoadingFooter()
-        self.tableView.reloadData()
+        self.dismissLoading {[weak self] in
+            self?.removeLoadingFooter()
+            self?.tableView.reloadData()
+            self?.hideSnackbar()
+        }
     }
     
-    func didFailedLoadBooks(_ service: BookService, with error: Error) {
-        self.removeLoadingFooter()
+    func didFailedLoadBooks(_ service: BookService, with error: LibError) {
+        self.dismissLoading {[weak self] in
+            self?.removeLoadingFooter()
+            self?.onFailedLatestBooks(with: error)
+        }
     }
     
     private func removeLoadingFooter() {
         self.footerView.stopAnimating()
-        self.tableView.tableFooterView = UIView(frame: .zero)
+        self.tableView.tableFooterView = nil
+    }
+    
+    private func onFailedLatestBooks(with error: LibError) {
+        guard !self.latestService.isEndOfList(with: error) else { return }
+        
+        self.snackBar.message = error.localizedDescription
+        self.topAnchorSnackbar.constant = 20
+        UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 7, options: [.curveEaseInOut], animations: {
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+        
+    }
+    
+    private func hideSnackbar() {
+        guard self.topAnchorSnackbar.constant == 20 else { return }
+        self.topAnchorSnackbar.constant = -500
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 7, options: [.curveEaseInOut], animations: {
+            self.view.layoutIfNeeded()
+        }, completion: nil)
     }
 }
 
@@ -86,5 +146,20 @@ extension LatestViewController {
         let detailsViewController = detailStoryboard.instantiateViewController(withIdentifier: "detailsViewController") as! DetailsViewController
         detailsViewController.book = book
         self.navigationController?.pushViewController(detailsViewController, animated: true)
+    }
+    
+    private func showLoading(_ completion: @escaping (() -> Void)) {
+        self.loadingViewController = MSLoadingViewController()
+        self.loadingViewController.message = "Fetching books..."
+        self.present(loadingViewController, animated: true, completion: completion)
+    }
+    
+    private func dismissLoading(_ completion: @escaping (() -> Void)) {
+        guard let loadingViewController = self.loadingViewController else {
+            completion()
+            return
+        }
+        loadingViewController.dismiss(animated: true, completion: completion)
+        self.loadingViewController = nil
     }
 }

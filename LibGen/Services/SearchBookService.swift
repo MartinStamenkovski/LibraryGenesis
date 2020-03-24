@@ -39,6 +39,10 @@ class SearchBookService: BookService {
         self.searchBooks(with: query, and: page)
     }
     
+    func refreshBooks() {
+        self.searchBooks(with: query)
+    }
+    
     var lastIndex: Int {
         return self.books.count - 1
     }

@@ -37,4 +37,8 @@ class LatestBookService: BookService {
     var lastIndex: Int {
         return self.books.count - 1
     }
+    
+    func refreshBooks() {
+        self.fetchLatestBooks(with: page)
+    }
 }

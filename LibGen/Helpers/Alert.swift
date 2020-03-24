@@ -36,4 +36,33 @@ struct Alert {
         actionSheetMirrors.addAction(cancelAction)
         vc.present(actionSheetMirrors, animated: true, completion: nil)
     }
+    
+    static func errorLoadingBooks(on vc: UIViewController, with error: LibError, completion: @escaping((Bool) -> Void)) {
+        switch error {
+        case .error, .errorParsingHTML:
+            Alert.retry(on: vc, with: error, completion)
+        case .noResults:
+            Alert.errorNoResults(on: vc, with: error, completion)
+        }
+    }
+    
+    static func retry(on vc: UIViewController, with error: LibError, _ completion: @escaping((Bool) -> Void)) {
+        let alert = UIAlertController(title: "Error loading books, try again.", message: error.localizedDescription, preferredStyle: .alert)
+        
+        let retryAction = UIAlertAction(title: "Retry", style: .cancel) { _ in
+            completion(true)
+        }
+        alert.addAction(retryAction)
+        vc.present(alert, animated: true, completion: nil)
+    }
+    
+    private static func errorNoResults(on vc: UIViewController, with error: LibError,_ completion: @escaping((Bool) -> Void)) {
+        let alert = UIAlertController(title: "Error loading books, try again.", message: error.localizedDescription, preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "OK", style: .cancel) { _ in
+            completion(false)
+        }
+        alert.addAction(okAction)
+        vc.present(alert, animated: true, completion: nil)
+    }
 }
