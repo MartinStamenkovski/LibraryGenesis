@@ -37,7 +37,7 @@ class Snackbar: UIView {
         let button = UIButton()
         button.setTitle("Retry", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
-        button.setTitleColor(UIColor.systemBlue.withAlphaComponent(0.7), for: .highlighted)
+        button.setTitleColor(UIColor.systemBlue.withAlphaComponent(0.5), for: .highlighted)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(onRetryAction(sender:)), for: .touchUpInside)
         return button
@@ -92,10 +92,8 @@ class Snackbar: UIView {
         self.layer.shadowColor = UIColor.lightGray.cgColor
         self.layer.shadowOpacity = 0.5
         self.layer.shadowOffset = .zero
-        self.layer.shadowRadius = 8
+        self.layer.shadowRadius = 5
         self.layer.cornerRadius = 12
-        self.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
-        
     }
     
     @objc
