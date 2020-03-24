@@ -2,7 +2,7 @@
 //  Snackbar.swift
 //  LibGen
 //
-//  Created by Martin Stamenkovski INS on 3/24/20.
+//  Created by Martin Stamenkovski on 3/24/20.
 //  Copyright © 2020 Stamenkovski. All rights reserved.
 //
 

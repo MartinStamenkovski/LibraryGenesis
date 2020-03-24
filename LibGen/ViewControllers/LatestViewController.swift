@@ -117,8 +117,10 @@ extension LatestViewController: BookServiceDelegate {
     }
     
     private func removeLoadingFooter() {
-        self.footerView.stopAnimating()
-        self.tableView.tableFooterView = nil
+        UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction, .curveLinear], animations: {
+            self.footerView.stopAnimating()
+            self.tableView.tableFooterView = nil
+        }, completion: nil)
     }
     
     private func onFailedLatestBooks(with error: LibError) {

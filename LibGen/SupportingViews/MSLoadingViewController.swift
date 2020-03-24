@@ -2,7 +2,7 @@
 //  LoadingViewController.swift
 //  MSUIKit
 //
-//  Created by Martin on 11/30/19.
+//  Created by Martin Stamenkovski on 11/30/19.
 //  Copyright © 2019 martinstamenkovski. All rights reserved.
 //
 
@@ -77,9 +77,9 @@ public final class MSLoadingViewController: UIViewController {
             self.setupBlurEffectView()
         } else {
             if #available(iOS 13.0, *) {
-                self.view.backgroundColor = UIColor.tertiarySystemFill.withAlphaComponent(0.3)
+                self.view.backgroundColor = UIColor.secondarySystemBackground.withAlphaComponent(0.7)
             } else {
-                self.view.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
+                self.view.backgroundColor = UIColor.lightGray.withAlphaComponent(0.4)
             }
         }
     }
@@ -99,8 +99,9 @@ public final class MSLoadingViewController: UIViewController {
         } else {
             self.loadingView.layer.shadowColor = UIColor.lightGray.cgColor
         }
-        self.loadingView.layer.shadowOpacity = 0.5
-        self.loadingView.layer.shadowOffset = CGSize(width: 0, height: 0)
+        self.loadingView.layer.shadowOpacity = 0.3
+        self.loadingView.layer.shadowOffset = .zero
+        self.loadingView.layer.shadowRadius = 1.0
     }
 }
 

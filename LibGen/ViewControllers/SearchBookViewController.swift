@@ -112,8 +112,8 @@ extension SearchBookViewController: BookServiceDelegate {
     }
     
     private func removeLoadingFooter() {
-        self.footerView.stopAnimating()
-        self.tableView.tableFooterView = nil
+       self.footerView.stopAnimating()
+       self.tableView.tableFooterView = nil
     }
     
     private func loadNextPage() {
