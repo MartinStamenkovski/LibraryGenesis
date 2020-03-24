@@ -21,7 +21,7 @@ http://gen.lib.rus.ec/json.php?ids=2490856, 2490855, 2490854&fields=*
 ```
 More information can be found [here](http://garbage.world/posts/libgen/)
 
-## How to download?
+## How to download book?
 After you open the mirror link in Safari for example, there will be a button on top of the page as **GET**, press it and the download should start.
 
 ## Note
