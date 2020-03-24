@@ -54,7 +54,7 @@ class DetailsViewController: UIViewController {
     
     @IBAction
     func actionExpandDescription(_ sender: UIButton) {
-        UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction, .curveEaseInOut], animations: {
+        UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction, .curveLinear], animations: {
             if self.labelDescription.numberOfLines == 3 {
                 self.labelDescription.numberOfLines = 0
                 self.buttonExpandDescription.transform = CGAffineTransform(rotationAngle: .pi)
@@ -86,7 +86,7 @@ class DetailsViewController: UIViewController {
         self.labelPublisher.text = book.publisherOrEmpty
         self.labelPages.text = book.pagesOrEmpty
         self.labelFileType.text = book.fileType
-        self.labelDescription.text = book.descriptionOrEmpty
+        self.labelDescription.text = book.descriptionOrEmpty.html
     }
 }
 

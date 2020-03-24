@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5B54C2A4242A006D00AB0000 /* MSLoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B54C2A3242A006D00AB0000 /* MSLoadingViewController.swift */; };
 		5B54C2A6242A081000AB0000 /* Snackbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B54C2A5242A081000AB0000 /* Snackbar.swift */; };
+		5B54C2A8242A469100AB0000 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B54C2A7242A469000AB0000 /* String+Extension.swift */; };
 		5B9D3E362428DC3300B6DFAF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9D3E352428DC3300B6DFAF /* AppDelegate.swift */; };
 		5B9D3E382428DC3300B6DFAF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9D3E372428DC3300B6DFAF /* SceneDelegate.swift */; };
 		5B9D3E3D2428DC3300B6DFAF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5B9D3E3B2428DC3300B6DFAF /* Main.storyboard */; };
@@ -38,6 +39,7 @@
 /* Begin PBXFileReference section */
 		5B54C2A3242A006D00AB0000 /* MSLoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSLoadingViewController.swift; sourceTree = "<group>"; };
 		5B54C2A5242A081000AB0000 /* Snackbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snackbar.swift; sourceTree = "<group>"; };
+		5B54C2A7242A469000AB0000 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		5B9D3E322428DC3300B6DFAF /* LibGen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LibGen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B9D3E352428DC3300B6DFAF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5B9D3E372428DC3300B6DFAF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 				5B9D3E5B2428F2A100B6DFAF /* URL+Extension.swift */,
 				5B9D3E632428F62F00B6DFAF /* Identifier.swift */,
 				5B9D3E7324291EC200B6DFAF /* NavigationBar+Extension.swift */,
+				5B54C2A7242A469000AB0000 /* String+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -282,6 +285,7 @@
 				5B9D3E362428DC3300B6DFAF /* AppDelegate.swift in Sources */,
 				5B9D3E7B2429311200B6DFAF /* SearchBookService.swift in Sources */,
 				5B9D3E792429247D00B6DFAF /* SearchBookViewController.swift in Sources */,
+				5B54C2A8242A469100AB0000 /* String+Extension.swift in Sources */,
 				5B9D3E7724291F5E00B6DFAF /* Alert.swift in Sources */,
 				5B9D3E382428DC3300B6DFAF /* SceneDelegate.swift in Sources */,
 				5B9D3E8024294C2000B6DFAF /* LatestBookService.swift in Sources */,
