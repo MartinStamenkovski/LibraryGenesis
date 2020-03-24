@@ -21,7 +21,7 @@ http://gen.lib.rus.ec/json.php?ids=2490856, 2490855, 2490854&fields=*
 ```
 More information can be found [here](http://garbage.world/posts/libgen/)
 
-## How to download?
+## How to download book?
 After you open the mirror link in Safari for example, there will be a button on top of the page as **GET**, press it and the download should start.
 
 ## Note
@@ -34,4 +34,13 @@ I don't own anything, just showing the content from [Library Genesis](https://li
 
 ## License
 [MIT](https://github.com/MartinStamenkovski/LibraryGenesis-iOS/blob/master/LICENSE)
+
+## Preview
+<div> 
+  <span>
+    <img width="200" src="https://github.com/MartinStamenkovski/LibraryGenesis-iOS/blob/master/Screenshot/latest.png">
+    <img width="200" src="https://github.com/MartinStamenkovski/LibraryGenesis-iOS/blob/master/Screenshot/search.png">
+    <img width="200" src="https://github.com/MartinStamenkovski/LibraryGenesis-iOS/blob/master/Screenshot/preview.png">
+  </span>
+</div>
 
