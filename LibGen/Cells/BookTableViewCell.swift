@@ -17,9 +17,13 @@ class BookTableViewCell: UITableViewCell {
     @IBOutlet weak var labelAuthor: UILabel!
     @IBOutlet weak var labelYear: UILabel!
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.imageViewCover.image = nil
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.imageViewCover.image = nil
     }
     
     func setup(with book: Book) {
