@@ -53,8 +53,6 @@ class Snackbar: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        
         if #available(iOS 13.0, *) {
             self.backgroundColor = .secondarySystemBackground
         } else {
@@ -63,10 +61,6 @@ class Snackbar: UIView {
         self.setupSubviews()
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        self.setupShadow()
-    }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -85,6 +79,8 @@ class Snackbar: UIView {
             self.stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
             self.buttonAction.widthAnchor.constraint(equalToConstant: 60)
         ])
+        
+        self.setupShadow()
     }
     
     private func setupShadow() {
