@@ -34,16 +34,15 @@ class LatestViewController: UIViewController {
         
         self.latestService = LatestBookService()
         self.latestService.delegate = self
-        
         self.setupSnackbar()
         self.setupTableView()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        self.showLoading {
-            self.latestService.fetchLatestBooks()
+        
+        DispatchQueue.main.async {
+            self.showLoading {
+                self.latestService.fetchLatestBooks()
+            }
         }
+        
     }
     
     
