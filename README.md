@@ -33,7 +33,7 @@ This is not an e-book reader, to read downloaded books you will need an addition
 I don't own anything, just showing the content from [Library Genesis](https://libgen.is), all rights goes to the respective authors/owners.
 
 ## License
-[MIT](https://github.com/MartinStamenkovski/LibraryGenesis-iOS/blob/master/LICENSE)
+[GPL-3.0](https://github.com/MartinStamenkovski/LibraryGenesis/blob/master/LICENSE)
 
 ## Preview
 <div> 
