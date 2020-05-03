@@ -2,6 +2,10 @@
 
 This application is showing books from [Library Genesis](https://libgen.is).
 
+If you found this project useful leave a star ⭐️ 
+
+<a href="https://www.buymeacoffee.com/stamenkovski" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-blue.png" alt="Buy Me A Coffee" width="150"></a>
+
 ## Features
 
 - [x] Search books with title, author, etc ...
